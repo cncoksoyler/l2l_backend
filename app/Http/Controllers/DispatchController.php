@@ -16,6 +16,7 @@ class DispatchController extends Controller
      */
     public function index()
     {
+        dd("index");
         $response = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/machines/get_open_dispatches', [
             'auth' => env('APIKEY'),
             'site' => 20,
@@ -35,6 +36,7 @@ class DispatchController extends Controller
     public function create()
     {
         //
+        dd("create");
     }
 
     /**
@@ -46,6 +48,7 @@ class DispatchController extends Controller
     public function store(StoreDispatchRequest $request)
     {
         //
+        dd("store");
     }
 
     /**
@@ -54,9 +57,17 @@ class DispatchController extends Controller
      * @param  \App\Models\Dispatch  $dispatch
      * @return \Illuminate\Http\Response
      */
-    public function show(Dispatch $dispatch, $id)
+    public function show($id)
     {
-        $response = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/machines/get_open_dispatches/' . $id, [
+        // dd("show");
+        $code  = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/lines', [
+            'auth' => env('APIKEY'),
+            'site' => 20,
+            'code' => $id,
+        ]);
+        $code = json_decode($code);
+        // dd($code->data[0]->defaultmachine);
+        $response = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/machines/get_open_dispatches/' . $code->data[0]->defaultmachine, [
             'auth' => env('APIKEY'),
             'site' => 20,
             'limit' => 100,
@@ -64,6 +75,7 @@ class DispatchController extends Controller
             'dispatchtype_ids' => '622,623,837,618,1123,001'
 
         ]);
+        // dd($response, $dispatch);
         return json_decode($response);
     }
 
@@ -75,7 +87,7 @@ class DispatchController extends Controller
      */
     public function edit(Dispatch $dispatch)
     {
-        //
+        dd("edit");
     }
 
     /**
@@ -87,7 +99,7 @@ class DispatchController extends Controller
      */
     public function update(UpdateDispatchRequest $request, Dispatch $dispatch)
     {
-        //
+        dd("update");
     }
 
     /**
@@ -98,6 +110,6 @@ class DispatchController extends Controller
      */
     public function destroy(Dispatch $dispatch)
     {
-        //
+        dd("destroy");
     }
 }
