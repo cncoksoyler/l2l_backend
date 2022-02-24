@@ -65,9 +65,9 @@ class DispatchController extends Controller
             'site' => 20,
             'code' => $id,
         ]);
-        $code = json_decode($code);
+        $code = json_decode($code)->data[0]->defaultmachine;
         // dd($code->data[0]->defaultmachine);
-        $response = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/machines/get_open_dispatches/' . $code->data[0]->defaultmachine, [
+        $response = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/machines/get_open_dispatches/' . $code, [
             'auth' => env('APIKEY'),
             'site' => 20,
             'limit' => 100,
