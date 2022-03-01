@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DispatchController;
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('dispatch', DispatchController::class);
+//Route::apiResource('dispatch',DispatchController::class)->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function(){
+    //
+});

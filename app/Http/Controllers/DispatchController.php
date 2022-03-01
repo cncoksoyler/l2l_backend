@@ -16,15 +16,14 @@ class DispatchController extends Controller
      */
     public function index()
     {
-        dd("index");
-        $response = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/machines/get_open_dispatches', [
-            'auth' => env('APIKEY'),
-            'site' => 20,
-            'limit' => 100,
-            'OPEN' => 'T',
-            'dispatchtype_ids' => '622,623,837,618,1123,001'
+         dd("metin");  
 
+        $response = Http::post('https://autoliv-eu2.leading2lean.com/api/1.0/users/clock_out/TPC8200/?auth=majIaaaj7gzZQVB5aFfTOUFGLn2OCk4e&site=20&linecode=Ni-Cr Plating', [
+            'auth' =>  config('services.l2l.apiKey'),
+            'site' => config('services.l2l.site'),
+            'linecode' => 'Ni-Cr Plating',
         ]);
+       dd($response);
         return json_decode($response);
     }
 
@@ -59,18 +58,19 @@ class DispatchController extends Controller
      */
     public function show($id)
     {
-        // dd("show");
+        //$url = config('services.l2l.url');
+         //dd($url);
         $code  = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/lines', [
-            'auth' => env('APIKEY'),
-            'site' => 20,
+            'auth' => config('services.l2l.apiKey'),
+            'site' => config('services.l2l.site'),
             'code' => $id,
         ]);
        
         $code = json_decode($code)->data[0]->defaultmachine;
         // dd($code);
         $response = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/machines/get_open_dispatches/' . $code, [
-            'auth' => env('APIKEY'),
-            'site' => 20,
+            'auth' => config('services.l2l.apiKey'),
+            'site' => config('services.l2l.site'),
             'limit' => 100,
             'OPEN' => 'T',
             'dispatchtype_ids' => '622,623,837,618,1123,001'
@@ -86,7 +86,7 @@ class DispatchController extends Controller
      * @param  \App\Models\Dispatch  $dispatch
      * @return \Illuminate\Http\Response
      */
-    public function edit(Dispatch $dispatch)
+    public function edit($id)
     {
         dd("edit");
     }
