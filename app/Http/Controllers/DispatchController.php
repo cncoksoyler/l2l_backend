@@ -16,7 +16,7 @@ class DispatchController extends Controller
      */
     public function index()
     {
-         dd("metin");  
+        
 
         $response = Http::post('https://autoliv-eu2.leading2lean.com/api/1.0/users/clock_out/TPC8200/?auth=majIaaaj7gzZQVB5aFfTOUFGLn2OCk4e&site=20&linecode=Ni-Cr Plating', [
             'auth' =>  config('services.l2l.apiKey'),
@@ -58,9 +58,10 @@ class DispatchController extends Controller
      */
     public function show($id)
     {
-        //$url = config('services.l2l.url');
-         //dd($url);
-        $code  = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/lines', [
+        $url = config('services.l2l.url');
+        //dd($url);
+        
+        $code  = Http::get($url . 'lines', [
             'auth' => config('services.l2l.apiKey'),
             'site' => config('services.l2l.site'),
             'code' => $id,
@@ -68,7 +69,7 @@ class DispatchController extends Controller
        
         $code = json_decode($code)->data[0]->defaultmachine;
         // dd($code);
-        $response = Http::get('https://autoliv-eu2.leading2lean.com/api/1.0/machines/get_open_dispatches/' . $code, [
+        $response = Http::get($url . '/machines/get_open_dispatches/' . $code, [
             'auth' => config('services.l2l.apiKey'),
             'site' => config('services.l2l.site'),
             'limit' => 100,
